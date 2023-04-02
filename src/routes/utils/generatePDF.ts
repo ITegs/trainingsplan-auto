@@ -35,7 +35,7 @@ function getImageRatio(data: string) {
 	});
 }
 
-export async function generatePDF(name: string, sections: section[]) {
+export async function generatePDF(name: string, title: string, sections: section[]) {
 	const doc = new jsPDF();
 
 	// Add title
@@ -48,8 +48,14 @@ export async function generatePDF(name: string, sections: section[]) {
 	doc.setDrawColor(34, 124, 157);
 	doc.line(10, 25, 40, 25);
 
+	// Add plan title
+	doc.setFontSize(20);
+	doc.text(title, 13, 40);
+	doc.setDrawColor(229, 89, 55);
+	doc.rect(10, 32, 185, 10);
+
 	// Add sections
-	let y = 40;
+	let y = 55;
 	let i = 1;
 	for (const section of sections) {
 		doc.setFontSize(13);
@@ -62,22 +68,24 @@ export async function generatePDF(name: string, sections: section[]) {
 
 		y += 10;
 
-		let x = 23;
-		for (const image of section.images) {
-			// get format of image
-			const format = image.name.split('.').pop() as string;
-			format.toUpperCase();
-			console.log(format);
+		if (section.images !== undefined) {
+			let x = 23;
+			for (const image of section.images) {
+				// get format of image
+				const format = image.name.split('.').pop() as string;
+				format.toUpperCase();
+				console.log(format);
 
-			const data = (await parseImages(image)) as string;
+				const data = (await parseImages(image)) as string;
 
-			const ratio = (await getImageRatio(data)) as number;
+				const ratio = (await getImageRatio(data)) as number;
 
-			doc.addImage(data, format, x, y, 30 / ratio, 30, '', 'FAST');
-			x += 30 / ratio + 5;
+				doc.addImage(data, format, x, y, 30 / ratio, 30, '', 'FAST');
+				x += 30 / ratio + 5;
+			}
+
+			y += 40;
 		}
-
-		y += 40;
 
 		doc.setFontSize(17);
 		doc.text(section.text, 20, y);
