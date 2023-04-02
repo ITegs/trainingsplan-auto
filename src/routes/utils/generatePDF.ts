@@ -5,7 +5,7 @@ import loadImage from 'blueimp-load-image';
 import '../lib/Abel-Regular-normal.js';
 
 function parseImages(image: Blob) {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		loadImage(
 			image,
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
