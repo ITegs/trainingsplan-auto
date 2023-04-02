@@ -13,12 +13,17 @@
 }
 
 body {
-  min-height: 100vh;
   margin: 0;
-  background-attachment: fixed;
-  background-color: var(--color-bg-1);
-  background-size: 100vw 100vh;
-  background-color: var(--color-bg);
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 h1,
