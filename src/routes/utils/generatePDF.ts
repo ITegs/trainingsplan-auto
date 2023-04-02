@@ -80,19 +80,19 @@ export async function generatePDF(name: string, title: string, sections: section
 
 				const ratio = (await getImageRatio(data)) as number;
 
-				doc.addImage(data, format, x, y, 30 / ratio, 30, '', 'FAST');
-				x += 30 / ratio + 5;
+				doc.addImage(data, format, x, y, 40 / ratio, 40, '', 'FAST');
+				x += 40 / ratio + 5;
 			}
 
-			y += 40;
+			y += 50;
 		}
 
-		doc.setFontSize(17);
+		doc.setFontSize(13);
 		doc.text(section.text, 20, y);
 
 		// get the number of lines
 		const lines = doc.splitTextToSize(section.text, 150);
-		y += lines.length * 10 + 10;
+		y += lines.length * 8 + 10;
 
 		if (y > 250) {
 			doc.setFontSize(13);

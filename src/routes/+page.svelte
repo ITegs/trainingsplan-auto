@@ -61,7 +61,7 @@
 <div class="add-section">
 	<h1>Neuer Abschnitt</h1>
 	<input class="as-title" type="text" placeholder="Name des Abschnitts" bind:value={newSec.name} />
-	<textarea class="as-text" placeholder="Text" bind:value={newSec.text} />
+	<textarea class="as-text" placeholder="Beschreibung" bind:value={newSec.text} />
 	<input type="file" accept="image/*" multiple bind:files />
 	{#if files}
 		<div class="images">
