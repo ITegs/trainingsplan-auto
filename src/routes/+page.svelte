@@ -1,18 +1,9 @@
 <script lang="ts">
-	type section = {
-		name: string;
-		text: string;
-		images: FileList;
-	};
-
-	type newSection = {
-		name: string;
-		text: string;
-		images?: FileList;
-	};
+	import { generatePDF } from './utils/generatePDF';
+	import type { section, newSection } from './utils/types';
 
 	let name = '';
-	let newSection: newSection = {
+	let newSec: newSection = {
 		name: '',
 		text: ''
 	};
@@ -20,18 +11,23 @@
 	let sections: section[] = [];
 
 	function addSection() {
-		let temp = newSection;
+		let temp = newSec;
 		temp.images = files;
 		sections = [...sections, temp as section];
-		newSection = {
+		newSec = {
 			name: '',
 			text: ''
 		};
+		console.log(sections);
+	}
+
+	function generate() {
+		generatePDF(name, sections);
 	}
 </script>
 
 <h1>Trainingsplan erstellen</h1>
-<input class="name" type="text" placeholder="Name des Trainingsplans" bind:value={name} />
+<input class="name" type="text" placeholder="Name" bind:value={name} />
 
 <div class="sections">
 	{#if sections.length > 0}
@@ -57,13 +53,8 @@
 
 <div class="add-section">
 	<h1>Neuer Abschnitt</h1>
-	<input
-		class="as-title"
-		type="text"
-		placeholder="Name des Abschnitts"
-		bind:value={newSection.name}
-	/>
-	<textarea class="as-text" placeholder="Text" bind:value={newSection.text} />
+	<input class="as-title" type="text" placeholder="Name des Abschnitts" bind:value={newSec.name} />
+	<textarea class="as-text" placeholder="Text" bind:value={newSec.text} />
 	<input type="file" accept="image/*" multiple bind:files />
 	{#if files}
 		<div class="images">
@@ -74,6 +65,8 @@
 	{/if}
 	<button class="as-button" on:click={addSection}>Abschnitt hinzufügen</button>
 </div>
+
+<button class="generate" on:click={generate}>PDF erstellen</button>
 
 <style>
 	.name {
@@ -136,6 +129,16 @@
 	}
 
 	.as-button {
+		font-size: 1rem;
+		font-weight: bold;
+		margin: 2em;
+		border: 1px solid black;
+		border-radius: 5px;
+		color: var(--color-primary);
+		padding: 1em;
+	}
+
+	.generate {
 		font-size: 1rem;
 		font-weight: bold;
 		margin: 2em;
