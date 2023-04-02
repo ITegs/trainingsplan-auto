@@ -5,8 +5,14 @@
 		images: FileList;
 	};
 
+	type newSection = {
+		name: string;
+		text: string;
+		images?: FileList;
+	};
+
 	let name = '';
-	let newSection: any = {
+	let newSection: newSection = {
 		name: '',
 		text: ''
 	};
@@ -16,7 +22,7 @@
 	function addSection() {
 		let temp = newSection;
 		temp.images = files;
-		sections = [...sections, temp];
+		sections = [...sections, temp as section];
 		newSection = {
 			name: '',
 			text: ''
