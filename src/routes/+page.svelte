@@ -3,12 +3,15 @@
 	import type { section, newSection } from './utils/types';
 
 	let name = '';
+	let title = '';
 	let newSec: newSection = {
 		name: '',
 		text: ''
 	};
 	let files: FileList;
 	let sections: section[] = [];
+
+	let finished = true;
 
 	function addSection() {
 		let temp = newSec;
@@ -22,12 +25,16 @@
 	}
 
 	function generate() {
-		generatePDF(name, sections);
+		finished = false;
+		generatePDF(name, title, sections).then(() => {
+			finished = true;
+		});
 	}
 </script>
 
 <h1>Trainingsplan erstellen</h1>
-<input class="name" type="text" placeholder="Name" bind:value={name} />
+<input class="text" type="text" placeholder="Name" bind:value={name} />
+<input class="text" type="text" placeholder="Titel des Plans" bind:value={title} />
 
 <div class="sections">
 	{#if sections.length > 0}
@@ -68,10 +75,15 @@
 
 <button class="generate" on:click={generate}>PDF erstellen</button>
 
+{#if !finished}
+	<p class="loading">PDF wird erstellt...</p>
+{/if}
+
 <style>
-	.name {
+	.text {
 		font-size: 1rem;
 		font-weight: bold;
+		margin: 0.5em;
 	}
 	.sections {
 		margin-block: 5em;
@@ -146,5 +158,27 @@
 		border-radius: 5px;
 		color: var(--color-primary);
 		padding: 1em;
+	}
+
+	.loading {
+		text-align: center;
+		color: red;
+		animation: blink-fade 1.5s infinite;
+		border: 1px solid red;
+		border-radius: 0.4em;
+		margin-inline: 4em;
+		padding: 1em;
+	}
+
+	@keyframes blink-fade {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>
