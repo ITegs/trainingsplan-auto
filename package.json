@@ -27,5 +27,8 @@
 		"typescript": "^5.0.0",
 		"vite": "^4.2.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@fontsource/abel": "^4.5.7"
+	}
 }
