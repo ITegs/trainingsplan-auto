@@ -3,6 +3,7 @@ import { jsPDF } from "jspdf";
 import loadImage from "blueimp-load-image";
 
 import "../lib/Abel-Regular-normal.js";
+import "../lib/SourceCodePro-Regular-normal.js";
 
 function parseImages(image: Blob) {
   return new Promise((resolve) => {
@@ -43,12 +44,13 @@ export async function generatePDF(
   const doc = new jsPDF();
 
   // Add title
-  doc.setFont("Abel-Regular");
-  doc.setFontSize(25);
+  doc.setFont("SourceCodePro-Regular");
+  doc.setFontSize(22);
   doc.setTextColor(229, 89, 55);
   doc.text("Trainingsplan", 10, 20);
+  doc.setFont("Abel-Regular");
   doc.setTextColor(34, 124, 157);
-  doc.text(name, 60, 20);
+  doc.text(name, 75, 20);
   doc.setDrawColor(34, 124, 157);
   doc.line(10, 25, 40, 25);
 
@@ -61,13 +63,16 @@ export async function generatePDF(
   // Add sections
   let y = 55;
   let i = 1;
+  let xname = 0;
   for (const section of sections) {
+    doc.setFont("SourceCodePro-Regular");
     doc.setFontSize(13);
     doc.setTextColor(229, 89, 55);
     doc.text("Übung " + i + ":", 20, y);
+    doc.setFont("Abel-Regular");
     doc.setFontSize(20);
     doc.setTextColor(34, 124, 157);
-    doc.text(section.name, 40, y);
+    doc.text(section.name, 43 + xname, y);
     doc.line(20, y + 5, 60, y + 5);
 
     y += 10;
@@ -96,9 +101,9 @@ export async function generatePDF(
 
     // get the number of lines
     const lines = doc.splitTextToSize(section.text, 150);
-    y += lines.length * 8 + 10;
+    y += lines.length * 5 + 10;
 
-    if (y > 250) {
+    if (y > 220) {
       doc.setFontSize(13);
       doc.setTextColor(229, 89, 55);
       doc.text("Janina Erlacher", 75, 290);
@@ -109,6 +114,9 @@ export async function generatePDF(
     }
 
     i++;
+    if (i > 9) {
+      xname = 3;
+    }
   }
 
   doc.setFontSize(13);
