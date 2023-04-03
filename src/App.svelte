@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { slide } from "svelte/transition";
   import { generatePDF } from "./utils/generatePDF";
   import type { section, newSection } from "./utils/types";
   import Header from "./lib/Header.svelte";
@@ -22,7 +23,6 @@
       name: "",
       text: "",
     };
-    console.log(sections);
   }
 
   function generate() {
@@ -48,22 +48,28 @@
   <div class="sections">
     {#if sections.length > 0}
       {#each sections as section, i}
-        <hr />
-        <div class="sectionTitle">
+        <hr in:slide out:slide />
+        <div class="sectionTitle" in:slide out:slide>
           <p>Abschnitt {i}</p>
           &mdash;
           <h1>{section.name}</h1>
         </div>
         <p>{section.text}</p>
         {#if section.images}
-          <div class="images">
+          <div class="images" in:slide out:slide>
             {#each section.images as image, i}
-              <img class="img" src={URL.createObjectURL(image)} alt="i" />
+              <img
+                class="img"
+                src={URL.createObjectURL(image)}
+                alt={"Image " + i}
+              />
             {/each}
           </div>
         {/if}
       {/each}
-      <hr />
+      <hr in:slide out:slide />
+    {:else}
+      <p>Noch keine Abschnitte vorhanden</p>
     {/if}
   </div>
 
@@ -72,7 +78,7 @@
     <input
       class="as-title"
       type="text"
-      placeholder="Name des Abschnitts"
+      placeholder="Titel des Abschnitts"
       bind:value={newSec.name}
     />
     <textarea
@@ -84,7 +90,7 @@
     {#if files}
       <div class="images">
         {#each files as file, i}
-          <img class="img" src={URL.createObjectURL(file)} alt="i" />
+          <img class="img" src={URL.createObjectURL(file)} alt={"Image " + i} />
         {/each}
       </div>
     {/if}
@@ -92,13 +98,17 @@
     >
   </div>
 
-  {#if finished}
-    <button class="generate" on:click={generate}>PDF erstellen</button>
+  {#if !finished}
+    <p class="loading" out:slide>PDF wird erstellt...</p>
   {/if}
 
-  {#if !finished}
-    <p class="loading">PDF wird erstellt...</p>
-  {/if}
+  <button
+    class="generate"
+    in:slide
+    out:slide
+    on:click={generate}
+    disabled={!finished}>PDF erstellen</button
+  >
 
   <footer>
     <p>
@@ -145,6 +155,13 @@
       width: auto;
       height: 8em;
     }
+    .add-section {
+      margin-inline: 1em;
+    }
+
+    .loading {
+      margin-inline: 1em;
+    }
   }
 
   .add-section {
@@ -181,7 +198,7 @@
   .generate {
     font-size: 1rem;
     font-weight: bold;
-    margin: 2em;
+    margin: 1em;
     border: 1px solid black;
     border-radius: 5px;
     color: var(--color-primary);
@@ -189,13 +206,13 @@
   }
 
   .loading {
-    text-align: center;
-    color: red;
-    animation: blink-fade 1.5s infinite;
+    font-size: 1rem;
+    font-weight: bold;
     border: 1px solid red;
-    border-radius: 0.4em;
-    margin-inline: 4em;
+    border-radius: 5px;
+    color: red;
     padding: 1em;
+    animation: blink-fade 1.5s infinite;
   }
 
   @keyframes blink-fade {

@@ -6,8 +6,6 @@
   --color-bg: #f7f6f3;
   --color-theme: #227c9d;
   --color-text: #e55937;
-  --column-width: 42rem;
-  --column-margin-top: 4rem;
   font-family: var(--font-body);
   color: var(--color-text);
 }
@@ -16,13 +14,10 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
   text-align: center;
 }
 
@@ -33,7 +28,13 @@ p {
 }
 
 h1 {
+  font-size: 2rem;
+  text-align: center;
   color: var(--color-theme);
+}
+
+h2 {
+  font-size: 1rem;
 }
 
 p {
@@ -49,35 +50,6 @@ a:hover {
   text-decoration: underline;
 }
 
-h1 {
-  font-size: 2rem;
-  text-align: center;
-}
-
-h2 {
-  font-size: 1rem;
-}
-
-pre {
-  font-size: 16px;
-  font-family: var(--font-mono);
-  background-color: rgba(255, 255, 255, 0.45);
-  border-radius: 3px;
-  box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
-  padding: 0.5em;
-  overflow-x: auto;
-  color: var(--color-text);
-}
-
-.text-column {
-  display: flex;
-  max-width: 48rem;
-  flex: 0.6;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 auto;
-}
-
 button {
   font-size: inherit;
   font-family: inherit;
@@ -89,22 +61,14 @@ button:focus:not(:focus-visible) {
   outline: none;
 }
 
+button:disabled {
+  opacity: 0.5;
+}
+
 @media (min-width: 720px) {
   h1 {
     font-size: 2.4rem;
   }
-}
-
-.visually-hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: auto;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-  white-space: nowrap;
 }
 
 input {
