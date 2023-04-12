@@ -1,4 +1,4 @@
-import type { section } from "./types";
+import { type section, Template } from "./types";
 import { jsPDF } from "jspdf";
 import loadImage from "blueimp-load-image";
 
@@ -36,28 +36,43 @@ function getImageRatio(data: string) {
   });
 }
 
+let primaryColor: number[];
+let secondaryColor: number[];
+
+function configColor(template: Template, doc: any) {
+  if (template === Template.janina || template === Template.blank) {
+    primaryColor = [229, 89, 55];
+    secondaryColor = [34, 124, 157];
+  } else if (template === Template.flo) {
+    primaryColor = [80, 140, 164];
+    secondaryColor = [107, 94, 98];
+  }
+}
+
 export async function generatePDF(
   name: string,
   title: string,
-  sections: section[]
+  sections: section[],
+  template: Template
 ) {
   const doc = new jsPDF();
+  configColor(template, doc);
 
   // Add title
   doc.setFont("SourceCodePro-Regular");
   doc.setFontSize(22);
-  doc.setTextColor(229, 89, 55);
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.text("Trainingsplan", 10, 20);
   doc.setFont("Abel-Regular");
-  doc.setTextColor(34, 124, 157);
+  doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
   doc.text(name, 75, 20);
-  doc.setDrawColor(34, 124, 157);
+  doc.setDrawColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
   doc.line(10, 25, 40, 25);
 
   // Add plan title
   doc.setFontSize(20);
   doc.text(title, 13, 40);
-  doc.setDrawColor(229, 89, 55);
+  doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.rect(10, 32, 185, 10);
 
   // Add sections
@@ -67,11 +82,11 @@ export async function generatePDF(
   for (const section of sections) {
     doc.setFont("SourceCodePro-Regular");
     doc.setFontSize(13);
-    doc.setTextColor(229, 89, 55);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("Übung " + i + ":", 20, y);
     doc.setFont("Abel-Regular");
     doc.setFontSize(20);
-    doc.setTextColor(34, 124, 157);
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
     doc.text(section.name, 43 + xname, y);
     doc.line(20, y + 5, 60, y + 5);
 
@@ -105,9 +120,9 @@ export async function generatePDF(
 
     if (y > 220) {
       doc.setFontSize(13);
-      doc.setTextColor(229, 89, 55);
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
       doc.text("Janina Erlacher", 75, 290);
-      doc.setTextColor(34, 124, 157);
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
       doc.text("- Body Poetry Yoga", 103, 290);
       doc.addPage();
       y = 20;
@@ -120,9 +135,9 @@ export async function generatePDF(
   }
 
   doc.setFontSize(13);
-  doc.setTextColor(229, 89, 55);
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.text("Janina Erlacher", 75, 290);
-  doc.setTextColor(34, 124, 157);
+  doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
   doc.text("- Body Poetry Yoga", 103, 290);
   doc.save("Trainingsplan-" + name + ".pdf");
 }

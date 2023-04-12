@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { slide } from "svelte/transition";
   import { generatePDF } from "./utils/generatePDF";
   import type { section, newSection } from "./utils/types";
+  import { Template } from "./utils/types";
   import Header from "./lib/Header.svelte";
 
   let name = "";
@@ -15,6 +17,16 @@
 
   let finished = true;
 
+  let template: Template;
+
+  onMount(async () => {
+    template = localStorage.getItem("template") as Template;
+    if (template === null) {
+      template = Template.blank;
+      localStorage.setItem("template", template);
+    }
+  });
+
   function addSection() {
     let temp = newSec;
     temp.images = files;
@@ -27,7 +39,7 @@
 
   function generate() {
     finished = false;
-    generatePDF(name, title, sections).then(() => {
+    generatePDF(name, title, sections, template).then(() => {
       finished = true;
     });
   }
