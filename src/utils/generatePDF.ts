@@ -40,12 +40,15 @@ let primaryColor: number[];
 let secondaryColor: number[];
 
 function configColor(template: Template, doc: any) {
-  if (template === Template.janina || template === Template.blank) {
+  if (template === Template.blank) {
+    primaryColor = [21, 122, 110];
+    secondaryColor = [0, 0, 0];
+  } else if (template === Template.janina) {
     primaryColor = [229, 89, 55];
     secondaryColor = [34, 124, 157];
   } else if (template === Template.flo) {
-    primaryColor = [80, 140, 164];
-    secondaryColor = [107, 94, 98];
+    primaryColor = [107, 94, 98];
+    secondaryColor = [80, 140, 164];
   }
 }
 
@@ -119,13 +122,35 @@ export async function generatePDF(
     y += lines.length * 5 + 10;
 
     if (y > 220) {
-      doc.setFontSize(13);
-      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-      doc.text("Janina Erlacher", 75, 290);
-      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-      doc.text("- Body Poetry Yoga", 103, 290);
-      doc.addPage();
-      y = 20;
+      if (template === Template.janina) {
+        doc.setFontSize(13);
+        doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+        doc.text("Janina Erlacher", 75, 290);
+        doc.setTextColor(
+          secondaryColor[0],
+          secondaryColor[1],
+          secondaryColor[2]
+        );
+        doc.text("- Body Poetry Yoga", 103, 290);
+        doc.addPage();
+        y = 20;
+      } else if (template === Template.flo) {
+        doc.setFontSize(13);
+        doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+        doc.text("Florian Mayer", 79, 290);
+        doc.setTextColor(
+          secondaryColor[0],
+          secondaryColor[1],
+          secondaryColor[2]
+        );
+        doc.text("- Osteopathie", 104, 290);
+        y = 20;
+        doc.addPage();
+        y = 20;
+      } else {
+        doc.addPage();
+        y = 20;
+      }
     }
 
     i++;
@@ -134,10 +159,21 @@ export async function generatePDF(
     }
   }
 
-  doc.setFontSize(13);
-  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  doc.text("Janina Erlacher", 75, 290);
-  doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-  doc.text("- Body Poetry Yoga", 103, 290);
+  if (template === Template.janina) {
+    doc.setFontSize(13);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("Janina Erlacher", 75, 290);
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+    doc.text("- Body Poetry Yoga", 103, 290);
+    y = 20;
+  } else if (template === Template.flo) {
+    doc.setFontSize(13);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("Florian Mayer", 79, 290);
+    doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
+    doc.text("- Osteopathie", 104, 290);
+    y = 20;
+  }
+
   doc.save("Trainingsplan-" + name + ".pdf");
 }

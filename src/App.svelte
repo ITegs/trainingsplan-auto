@@ -48,7 +48,6 @@
 <main>
   <Header />
 
-  <h1>Trainingsplan erstellen</h1>
   <input class="text" type="text" placeholder="Name" bind:value={name} />
   <input
     class="text"
@@ -122,12 +121,18 @@
     disabled={!finished}>PDF erstellen</button
   >
 
-  <footer>
-    <p>
-      <a href="https://janinaerlacher.com">Janina Erlacher</a> &mdash; Body Poetry
-      Yoga
-    </p>
-  </footer>
+  <div class="template">
+    <p>Template</p>
+    <select
+      class="select"
+      bind:value={template}
+      on:change={() => localStorage.setItem("template", template)}
+    >
+      <option value={Template.blank}>Default</option>
+      <option value={Template.janina}>Janina</option>
+      <option value={Template.flo}>Flo</option>
+    </select>
+  </div>
 </main>
 
 <style>
@@ -237,5 +242,25 @@
     100% {
       opacity: 1;
     }
+  }
+
+  .template {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-inline: 2rem;
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 1em;
+  }
+
+  .select {
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--color-theme);
   }
 </style>
