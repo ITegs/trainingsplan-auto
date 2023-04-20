@@ -39,7 +39,7 @@ function getImageRatio(data: string) {
 let primaryColor: number[];
 let secondaryColor: number[];
 
-function configColor(template: Template, doc: any) {
+function configColor(template: Template) {
   if (template === Template.blank) {
     primaryColor = [21, 122, 110];
     secondaryColor = [0, 0, 0];
@@ -59,7 +59,7 @@ export async function generatePDF(
   template: Template
 ) {
   const doc = new jsPDF();
-  configColor(template, doc);
+  configColor(template);
 
   // Add title
   doc.setFont("SourceCodePro-Regular");
