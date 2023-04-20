@@ -1,0 +1,14 @@
+name: Test
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install 🔧
+        npm ci
+      - name: Test 🧪
+        npm test
