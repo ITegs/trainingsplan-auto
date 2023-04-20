@@ -2,8 +2,8 @@ import { type section, Template } from "./types";
 import { jsPDF } from "jspdf";
 import loadImage from "blueimp-load-image";
 
-import "../lib/Abel-Regular-normal.js";
-import "../lib/SourceCodePro-Regular-normal.js";
+import "../lib/Abel-Regular-normal";
+import "../lib/SourceCodePro-Regular-normal";
 
 function parseImages(image: Blob) {
   return new Promise((resolve) => {
@@ -176,4 +176,6 @@ export async function generatePDF(
   }
 
   doc.save("Trainingsplan-" + name + ".pdf");
+
+  return doc;
 }
