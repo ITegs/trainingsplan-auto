@@ -85,7 +85,7 @@
           </div>
         {/if}
         <img
-          src="src/assets/Close.svg"
+          src="./Close.svg"
           alt="Delete item"
           width="30"
           on:click={() => deleteSection(i)}
