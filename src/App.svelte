@@ -1,9 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { slide } from "svelte/transition";
+
   import { generatePDF } from "./utils/generatePDF";
   import type { section, newSection } from "./utils/types";
   import { Template } from "./utils/types";
+
   import Header from "./lib/Header.svelte";
 
   let name = "";
@@ -35,6 +37,11 @@
       name: "",
       text: "",
     };
+  }
+
+  function deleteSection(i: number) {
+    sections.splice(i, 1);
+    sections = [...sections];
   }
 
   function generate() {
@@ -77,6 +84,14 @@
             {/each}
           </div>
         {/if}
+        <img
+          src="src/assets/Close.svg"
+          alt="Delete item"
+          width="30"
+          on:click={() => deleteSection(i)}
+          on:keypress={null}
+          class="close"
+        />
       {/each}
       <hr in:slide out:slide />
     {:else}
@@ -179,6 +194,11 @@
     .loading {
       margin-inline: 1em;
     }
+  }
+
+  .close {
+    cursor: pointer;
+    padding: 0.5em;
   }
 
   .add-section {

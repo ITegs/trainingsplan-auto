@@ -11,7 +11,7 @@ export type newSection = {
 };
 
 export enum Template {
+  blank = "blank",
   janina = "janina",
   flo = "flo",
-  blank = "blank",
 }
