@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://itegs.github.io/trainingsplan-auto">
-    <img src="./assets/banner.png" height="300px">
+    <img src="./assets/banner.png">
   </a>
 </p>
 
